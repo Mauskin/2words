@@ -1,0 +1,9 @@
+{
+  "name": "2words",
+  "description": "Converts numbers to words",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "react": "^0.12.2"
+  }
+}
