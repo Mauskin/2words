@@ -1,4 +1,5 @@
 var http = require('http');
+<<<<<<< Updated upstream
 var toWords = require('./2words');
 
 var NumberConverter = React.createClass({
@@ -32,15 +33,25 @@ var NumberConverter = React.createClass({
 ReactDOM.render(<NumberConverter />,
   document.getElementById('container')
 );
+=======
+var React = require('react');
+>>>>>>> Stashed changes
 
 http.createServer(function(req, res) {
 	if (req.url == '/') {
 		res.setHeader('Content-Type', 'text/html');
 		res.end(
+<<<<<<< Updated upstream
 			// TODO: load React locally
 			'<script src=//fb.me/react-0.12.2.min.js></script>' +
 			'<div id="NumberConverter">' + '</div>'
     		)
+=======
+			'<script src=//fb.me/react-0.12.2.min.js></script>' +
+			'<script src=script.js></script>' +
+			'<div id="NumberConverter"></div>'
+    )
+>>>>>>> Stashed changes
 	} else {
 		res.statusCode = 404;
 		res.end();
