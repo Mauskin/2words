@@ -1,6 +1,5 @@
 var http = require('http');
 var toWords = require('./2words');
-var React = require('react');
 
 var NumberConverter = React.createClass({
   getInitialState: function() {
