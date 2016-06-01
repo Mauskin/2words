@@ -12,8 +12,8 @@ function toWords(input) {
   var inputLength = inputString.length;
 
   // set an array of 3-digit groups
-  var groupCount = Math.floor((inputLength - 1) / 3);
-  var someMagicMath = Math.abs(inputLength - (groupCount + 1) * 3);
+  var groupCount = Math.ceil(inputLength/3);
+  var someMagicMath = Math.abs(inputLength - groupCount * 3);
   var numString = '00'.substring(0, someMagicMath) + inputString;
   var inputArray = numString.match(/\d{3}/g);
 
@@ -22,7 +22,7 @@ function toWords(input) {
   inputArray.forEach(function(entry) {
     var groupElement = [];
     groupElement[0] = Number(entry.match(/^\d/));
-    var inTeens = entry.match(/\d{2}$/)[0].match(/^1[1-9]$/) !== null;
+    var inTeens = entry.match(/1[1-9]$/) !== null;
     if (inTeens) {
       groupElement[1] = 0;
       groupElement[2] = Number(entry.match(/\d{2}$/));

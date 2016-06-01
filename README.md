@@ -4,6 +4,3 @@
 
 Попробовать: https://jsfiddle.net/cyrilmyshkin/usgqebpo/
 
-### Известные ошибки
-
-- Только целые числа
