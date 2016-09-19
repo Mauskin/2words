@@ -37,15 +37,22 @@
 
   thousands = [['', '', ''], ['тысяча', 'тысячи', 'тысяч'], ['миллион', 'миллиона', 'миллионов'], ['миллиард', 'миллиарда', 'миллиардов'], ['триллион', 'триллиона', 'триллионов'], ['квадриллион', 'квадриллиона', 'квадриллионов'], ['квинтиллион', 'квинтиллиона', 'квинтиллионов']];
 
-  getDecimals = function(number) {
-    var decimal, left, right;
+  getDecimals = function(number, variant) {
+    var decimal, left, right, unit;
+    if (variant == null) {
+      variant = false;
+    }
     decimal = number % 100;
     if ((10 < decimal && decimal < 20)) {
       return "" + decimals[decimal % 10];
     }
     right = decimal % 10;
     left = (decimal - right) / 10;
-    return (tens[left] + " " + units[right]).trim();
+    unit = units[right];
+    if (variant && (0 < right && right < 3)) {
+      unit = ['', 'одна', 'две'][right];
+    }
+    return (tens[left] + " " + unit).trim();
   };
 
   getHundreds = function(number) {
@@ -65,16 +72,24 @@
   };
 
   convertToText = function(number, i) {
-    var j;
+    var j, last, ref, variant;
     if (number === 0) {
       return '';
     }
-    j = 2;
-    return ((getHundreds(number)) + " " + (getDecimals(number)) + " " + thousands[i][j]).trim();
+    last = number % 10;
+    j = 0;
+    if ((1 < last && last < 5)) {
+      j = 1;
+    }
+    if (last === 0 || last > 4 || (10 < (ref = number % 100) && ref < 20)) {
+      j = 2;
+    }
+    variant = i === 1;
+    return ((getHundreds(number)) + " " + (getDecimals(number, variant)) + " " + thousands[i][j]).trim();
   };
 
   toWords = function(numberString) {
-    var group, i, k, len, numArray, number, result;
+    var group, i, numArray, number, result;
     if (initialCheck(numberString)) {
       return null;
     }
@@ -83,12 +98,15 @@
       return 'ноль';
     }
     numArray = processInput(number);
-    result = [];
-    for (i = k = 0, len = numArray.length; k < len; i = ++k) {
-      group = numArray[i];
-      result.push(convertToText(group, i));
-    }
-    return result.reverse().join(' ').trim();
+    return result = ((function() {
+      var k, len, results;
+      results = [];
+      for (i = k = 0, len = numArray.length; k < len; i = ++k) {
+        group = numArray[i];
+        results.push(convertToText(group, i));
+      }
+      return results;
+    })()).reverse().join(' ').trim();
   };
 
   module.exports = toWords;
