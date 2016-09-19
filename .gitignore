@@ -1,6 +1,3 @@
 
-.vscode/launch.json
 
-.tern-project
-
-*.swp
+.DS_Store
