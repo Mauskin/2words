@@ -1,4 +1,4 @@
-var HUNDREDS, KILOS, MORE_THEN_TEN_LESS_THEN_TWENTY, TENS, UNITS, breakByThree, initialCheck, isNumber, printHundredFrom, printTenFrom, stringify, toWords, tooLarge;
+var BETWEEN_TEN_AND_TWENTY, HUNDREDS, KILOS, TENS, UNITS, breakByThree, convertGroup, initialCheck, isNumber, printHundredFrom, printTenFrom, toWords, tooLarge;
 
 isNumber = function(number) {
   return typeof +number === 'number' || initNumber.constructor === Number;
@@ -29,7 +29,7 @@ TENS = ['', 'десять', 'двадцать', 'тридцать', 'сорок'
 
 UNITS = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
 
-MORE_THEN_TEN_LESS_THEN_TWENTY = ['', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
+BETWEEN_TEN_AND_TWENTY = ['', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
 
 KILOS = [['', '', ''], ['тысяча', 'тысячи', 'тысяч'], ['миллион', 'миллиона', 'миллионов'], ['миллиард', 'миллиарда', 'миллиардов'], ['триллион', 'триллиона', 'триллионов'], ['квадриллион', 'квадриллиона', 'квадриллионов']];
 
@@ -49,20 +49,19 @@ printHundredFrom = function(number) {
 };
 
 printTenFrom = function(number, variant) {
-  var decimal, leftPart, moreThenTenLessThenTwenty, res, rightPart, unit;
+  var decimal, leftPart, res, rightPart, unit;
   if (variant == null) {
     variant = false;
   }
   decimal = number % 100;
-  moreThenTenLessThenTwenty = (10 < decimal && decimal < 20);
-  if (moreThenTenLessThenTwenty) {
-    return " " + MORE_THEN_TEN_LESS_THEN_TWENTY[decimal % 10];
+  if ((10 < decimal && decimal < 20)) {
+    return " " + BETWEEN_TEN_AND_TWENTY[decimal % 10];
   }
   rightPart = decimal % 10;
-  if (!(variant === true && (0 < rightPart && rightPart < 3))) {
-    unit = UNITS[rightPart];
-  } else {
+  if (variant === true && (0 < rightPart && rightPart < 3)) {
     unit = ['', 'одна', 'две'][rightPart];
+  } else {
+    unit = UNITS[rightPart];
   }
   leftPart = Math.floor((decimal - rightPart) / 10);
   res = (TENS[leftPart] + " " + unit).trim();
@@ -73,20 +72,18 @@ printTenFrom = function(number, variant) {
   }
 };
 
-stringify = function(number, index) {
-  var group, last;
-  if (number === 0) {
+convertGroup = function(group, index) {
+  var form, last;
+  if (group === 0) {
     return '';
   }
-  last = number % 10;
-  group = (function() {
+  last = group % 10;
+  form = (function() {
     var ref;
     switch (false) {
-      case last !== 0:
+      case !(last === 0 || last > 4):
         return 2;
-      case !(last > 4):
-        return 2;
-      case !((10 < (ref = number % 100) && ref < 20)):
+      case !((10 < (ref = group % 100) && ref < 20)):
         return 2;
       case !((1 < last && last < 5)):
         return 1;
@@ -94,7 +91,7 @@ stringify = function(number, index) {
         return 0;
     }
   })();
-  return ("" + (printHundredFrom(number)) + (printTenFrom(number, index === 1)) + " " + KILOS[index][group]).trim();
+  return ("" + (printHundredFrom(group)) + (printTenFrom(group, index === 1)) + " " + KILOS[index][form]).trim();
 };
 
 toWords = function(input) {
@@ -106,7 +103,7 @@ toWords = function(input) {
   if (number === 0) {
     return 'ноль';
   }
-  return breakByThree(number).map(stringify).reverse().join(' ').trim();
+  return breakByThree(number).map(convertGroup).reverse().join(' ').trim();
 };
 
 module.exports = toWords;
