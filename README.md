@@ -1,7 +1,6 @@
-# 2words
+# Convert number to cyrillic script
 
-Пишет число прописью.
 
-Попробовать: https://jsfiddle.net/cyrilmyshkin/usgqebpo/
+Try it out: https://jsfiddle.net/cyrilmyshkin/usgqebpo/
 
 <script async src="//jsfiddle.net/kirillmyshkin/47o7hmuq/embed/result/"></script>
