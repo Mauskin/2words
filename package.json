@@ -1,26 +1,27 @@
 {
-  "name": "number-to-cyrillic",
-  "version": "1.0.0",
-  "description": "Convert nubmers to cyrillic script",
+  "name": "numtocyr",
+  "version": "1.0.0-rc1",
+  "description": "Convert numbers to Cyrillic Script",
   "main": "2words.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "prepublish": "cake build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mauskin/2words.git"
   },
   "keywords": [
-    "convert",
+    "converter",
     "javascript",
     "coffescript",
     "number",
-    "words"
+    "text"
   ],
-  "author": "Kirill Myshkin",
+  "author": "Kirill Myshkin <kirill@dvel.ru>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Mauskin/2words/issues"
+    "url": "https://github.com/mauskin/2words/issues"
   },
-  "homepage": "https://github.com/Mauskin/2words#readme"
+  "homepage": "https://github.com/mauskin/2words#readme"
 }
