@@ -1,0 +1,26 @@
+{
+  "name": "number-to-cyrillic",
+  "version": "1.0.0",
+  "description": "Convert nubmers to cyrillic script",
+  "main": "2words.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mauskin/2words.git"
+  },
+  "keywords": [
+    "convert",
+    "javascript",
+    "coffescript",
+    "number",
+    "words"
+  ],
+  "author": "Kirill Myshkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mauskin/2words/issues"
+  },
+  "homepage": "https://github.com/Mauskin/2words#readme"
+}
