@@ -1,4 +1,4 @@
-var altDecatext, deca, decatext, hecto, hectotext, initialCheck, isNumber, kilotext, processInput, stringify, toWords, tooLarge, unitstext;
+var HUNDREDS, KILOS, MORE_THEN_TEN_LESS_THEN_TWENTY, TENS, UNITS, breakByThree, initialCheck, isNumber, printHundredFrom, printTenFrom, stringify, toWords, tooLarge;
 
 isNumber = function(number) {
   return typeof +number === 'number' || initNumber.constructor === Number;
@@ -23,53 +23,54 @@ initialCheck = function(number) {
   }
 };
 
-hectotext = ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
+HUNDREDS = ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
 
-decatext = ['', 'десять', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
+TENS = ['', 'десять', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
 
-unitstext = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
+UNITS = ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
 
-altDecatext = ['', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
+MORE_THEN_TEN_LESS_THEN_TWENTY = ['', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
 
-kilotext = [['', '', ''], ['тысяча', 'тысячи', 'тысяч'], ['миллион', 'миллиона', 'миллионов'], ['миллиард', 'миллиарда', 'миллиардов'], ['триллион', 'триллиона', 'триллионов'], ['квадриллион', 'квадриллиона', 'квадриллионов']];
+KILOS = [['', '', ''], ['тысяча', 'тысячи', 'тысяч'], ['миллион', 'миллиона', 'миллионов'], ['миллиард', 'миллиарда', 'миллиардов'], ['триллион', 'триллиона', 'триллионов'], ['квадриллион', 'квадриллиона', 'квадриллионов']];
 
-processInput = function(number) {
-  var remain;
-  remain = 0;
-  return [1, 2, 3, 4, 5, 6, 7].map(function(num) {
+breakByThree = function(number) {
+  var remaining;
+  remaining = 0;
+  return [1, 2, 3, 4, 5, 6].map(function(num) {
     var res;
-    res = Math.floor(((number - remain) % Math.pow(1000, num)) / Math.pow(1000, num - 1));
-    remain += res;
+    res = Math.floor(((number - remaining) % Math.pow(1000, num)) / (Math.pow(1000, num - 1)));
+    remaining += res;
     return res;
   });
 };
 
-deca = function(number, variant) {
-  var decimal, left, res, right, unit;
+printHundredFrom = function(number) {
+  return HUNDREDS[Math.floor(number / 100)];
+};
+
+printTenFrom = function(number, variant) {
+  var decimal, leftPart, moreThenTenLessThenTwenty, res, rightPart, unit;
   if (variant == null) {
     variant = false;
   }
   decimal = number % 100;
-  if ((10 < decimal && decimal < 20)) {
-    return " " + altDecatext[decimal % 10];
+  moreThenTenLessThenTwenty = (10 < decimal && decimal < 20);
+  if (moreThenTenLessThenTwenty) {
+    return " " + MORE_THEN_TEN_LESS_THEN_TWENTY[decimal % 10];
   }
-  right = decimal % 10;
-  left = (decimal - right) / 10;
-  if (!(variant === true && (0 < right && right < 3))) {
-    unit = unitstext[right];
+  rightPart = decimal % 10;
+  if (!(variant === true && (0 < rightPart && rightPart < 3))) {
+    unit = UNITS[rightPart];
   } else {
-    unit = ['', 'одна', 'две'][right];
+    unit = ['', 'одна', 'две'][rightPart];
   }
-  res = (decatext[left] + " " + unit).trim();
+  leftPart = Math.floor((decimal - rightPart) / 10);
+  res = (TENS[leftPart] + " " + unit).trim();
   if (res.length > 0) {
     return " " + res;
   } else {
     return '';
   }
-};
-
-hecto = function(number) {
-  return hectotext[Math.floor(number / 100)];
 };
 
 stringify = function(number, index) {
@@ -93,7 +94,7 @@ stringify = function(number, index) {
         return 0;
     }
   })();
-  return ("" + (hecto(number)) + (deca(number, index === 1)) + " " + kilotext[index][group]).trim();
+  return ("" + (printHundredFrom(number)) + (printTenFrom(number, index === 1)) + " " + KILOS[index][group]).trim();
 };
 
 toWords = function(input) {
@@ -105,7 +106,7 @@ toWords = function(input) {
   if (number === 0) {
     return 'ноль';
   }
-  return processInput(number).map(stringify).reverse().join(' ').trim();
+  return breakByThree(number).map(stringify).reverse().join(' ').trim();
 };
 
 module.exports = toWords;
