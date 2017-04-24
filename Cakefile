@@ -10,8 +10,8 @@ run = (command, callback) ->
     callback?() unless err
 
 build = (callback) ->
-  run 'coffee -co . src/*.coffee', ->
-    run 'coffee -co spec src/spec/*-spec.coffee', callback
+  run 'coffee --no-header -bco . src/*.coffee', ->
+    run 'coffee --no-header -bco spec src/spec/*-spec.coffee', callback
 
 task 'build', 'Build main code and spec', ->
   build()

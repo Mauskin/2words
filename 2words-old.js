@@ -5,7 +5,7 @@ function toWords(input) {
   if (input == null) return null;
   var inputNumber = Number(input);
   var noNumber = isNaN(inputNumber);
-  var toLarge = inputNumber > 8999999999999999;
+  var toLarge = inputNumber > 9007199254740992;
   if (noNumber || toLarge) return null;
   if (inputNumber === 0) return 'ноль';
 
@@ -54,7 +54,6 @@ function toWords(input) {
     ['миллиард', 'миллиарда', 'миллиардов'],
     ['триллион', 'триллиона', 'триллионов'],
     ['квадриллион', 'квадриллиона', 'квадриллионов'],
-    ['квинтиллион', 'квинтиллиона', 'квинтиллионов']
   ];
 
   // Convert numbers to words
